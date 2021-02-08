@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
 namespace C_
 {
     // Battery class
@@ -11,9 +12,9 @@ namespace C_
         public int amountOfFloors;
         public int amountOfColumns;
         public int amountOfBasements;
-        public List<Column> columnList;
+        public List<Column> columnsList;
         public List<CallButton> callButtonsList;
-
+        
         public Battery(int id, string status,int amountOfColumns, int amountOfFloors, int amountOfBasements, int amountOfElevatorPerColumn)
         {
             this.ID = id;
@@ -21,16 +22,18 @@ namespace C_
             this.status = status;
             this.amountOfFloors = amountOfFloors;
             this.amountOfBasements = amountOfBasements;
-            this.columnList = new List<Column>(){};
-            this.callButtonsList = new List<CallButton>(){};
+            this.columnsList = new List<Column>();
+            this.callButtonsList = new List<CallButton>();
+            
 
             for (int i = 0; i < this.amountOfColumns; i++){
-                columnList[i] = new Column();
+                Column column = new Column(i, "online", 2, 2, 2, false);
+                columnsList.Add(column);
             }
 
-            for (int i = 0; i < this.amountOfFloors; i++){
-                callButtonsList[i] = new CallButton();
-            }
+            // for (int i = 0; i < this.amountOfFloors; i++){
+            //     callButtonsList[i] = new CallButton();
+            // }
             
         }
     }
@@ -41,6 +44,7 @@ namespace C_
         public string status;
         public int amountOfFloors;
         public int amountOfElevators;
+        public List<int> servedFloors;
         public List<Elevator> elevatorsList;
         public List<FloorRequestButton> floorRequestButtonsList;
 
@@ -52,6 +56,7 @@ namespace C_
             this.amountOfElevators = amountOfElevators;
             this.elevatorsList = new List<Elevator>(){};
             this.floorRequestButtonsList = new List<FloorRequestButton>(){};
+            this.servedFloors = new List<int>(){};
         }
     }
 
@@ -65,14 +70,14 @@ namespace C_
         public Door door;
         public List<int> floorRequestList; // will have to come back to this
 
-        public Elevator(int id, string status, int amountOfFloors, string direction, int currentfloor){
+        public Elevator(int id, string status, int amountOfFloors, int currentfloor){
             
             this.ID = id;
             this.status = status;
             this.amountOfFloors = amountOfFloors;
             this.direction = null;
             this.currentfloor = currentfloor;
-            this.door = new Door();
+            // this.door = new Door();
             this.floorRequestList = new List<int>(){}; // will have to come back to this
         }
     }
@@ -127,7 +132,8 @@ namespace C_
 
             Battery testBat = new Battery(1, "online", 4, 66, 6, 5);
             Console.WriteLine(testBat.status);
-        
+            Console.WriteLine("....");
+            Console.WriteLine(testBat.columnsList[3].ID);
         }
 
     }
