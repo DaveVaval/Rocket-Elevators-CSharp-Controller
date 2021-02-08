@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 
+
 namespace C_
 {
     // Battery class
@@ -12,6 +13,7 @@ namespace C_
         public int amountOfFloors;
         public int amountOfColumns;
         public int amountOfBasements;
+        public int columnID;
         public List<Column> columnsList;
         public List<CallButton> callButtonsList;
         
@@ -24,19 +26,51 @@ namespace C_
             this.amountOfBasements = amountOfBasements;
             this.columnsList = new List<Column>();
             this.callButtonsList = new List<CallButton>();
-            
+            this.columnID = 1;
 
-            for (int i = 0; i < this.amountOfColumns; i++){
-                Column column = new Column(i, "online", 2, 2, 2, false);
-                columnsList.Add(column);
+            if (this.amountOfBasements > 0){
+                createBasementColumn(amountOfBasements, amountOfElevatorPerColumn);
+                amountOfColumns--;
             }
 
-            // for (int i = 0; i < this.amountOfFloors; i++){
-            //     callButtonsList[i] = new CallButton();
-            // }
-            
+            createColumns(amountOfColumns, amountOfFloors, amountOfBasements, amountOfElevatorPerColumn);
+
+             
         }
+
+        public void createBasementColumn(int amountOfBasements, int amountOfElevatorPerColumn){
+            List<int> servedFloors = new List<int>();
+            int floor = -1;
+    
+            for (int i = 1; i < amountOfBasements; i++){
+                servedFloors.Add(floor);
+                floor--;
+            }
+            columnsList.Add(new Column(columnID, "online", amountOfBasements, amountOfElevatorPerColumn, servedFloors, true));
+            columnID++;
+        }
+
+        public void createColumns(int amountOfColumns, int amountOfFloors, int amountOfBasements, int amountOfElevatorPerColumn){
+            int amountOfFloorsPerColumn = (int)Math.Ceiling((double)amountOfFloors / amountOfColumns);
+            int floor = 1;
+
+            for (int i = 1; i < amountOfColumns; i++){
+                List<int> servedFloors = new List<int>(); 
+                for (int n = 1; n < amountOfFloorsPerColumn; n++){
+                    if(floor >= amountOfFloors){
+                        servedFloors.Add(floor);
+                        floor++;
+                    }
+                }
+                columnsList.Add(new Column(columnID, "online", amountOfFloors, amountOfElevatorPerColumn, servedFloors, false));
+                columnID++;
+            }
+        }
+
+        // public void createCallButtons
     }
+
+
 
     // Column class
     public class Column{
@@ -48,7 +82,7 @@ namespace C_
         public List<Elevator> elevatorsList;
         public List<FloorRequestButton> floorRequestButtonsList;
 
-        public Column(int id, string status, int amountOfFloors, int amountOfElevators, int servedFloors, bool isBasement){
+        public Column(int id, string status, int amountOfFloors, int amountOfElevators, List<int> servedFloors, bool isBasement){
             
             this.ID = id;
             this.status = status;
@@ -59,6 +93,8 @@ namespace C_
             this.servedFloors = new List<int>(){};
         }
     }
+
+
 
     // Elevator class
     public class Elevator{
@@ -82,6 +118,8 @@ namespace C_
         }
     }
 
+
+
     // Call Button class
     public class CallButton{
         public int ID;
@@ -96,6 +134,8 @@ namespace C_
             this.direction = direction;
         }
     }
+
+
 
     // Floor request button class
     public class FloorRequestButton{
@@ -130,10 +170,10 @@ namespace C_
         {
             Console.WriteLine("----------------// TESTING //-------------------");
 
-            Battery testBat = new Battery(1, "online", 4, 66, 6, 5);
+            Battery testBat = new Battery(1, "online", 4, 60, 6, 5);
             Console.WriteLine(testBat.status);
             Console.WriteLine("....");
-            Console.WriteLine(testBat.columnsList[3].ID);
+            Console.WriteLine(testBat.columnsList[1]);
         }
 
     }
