@@ -9,19 +9,50 @@ namespace C_
         public int ID;
         public string status;
         public int amountOfFloors;
-        public string[] columnList;
+        public int amountOfColumns;
+        public int amountOfBasements;
+        public Column[] columnList;
+        public CallButton[] callButtonsList;
 
-        // public void createColumns()
-        // {
-        //     for (int i = 0; i < this.amountOfFloors; i++){
-        //         columnList[i] = new Column();
-        //     }
-        // }
+        public Battery(int id, string status,int amountOfColumns, int amountOfFloors, int amountOfBasements, int amountOfElevatorPerColumn)
+        {
+            this.ID = id;
+            this.amountOfColumns = amountOfColumns;
+            this.status = status;
+            this.amountOfFloors = amountOfFloors;
+            this.amountOfBasements = amountOfBasements;
+            this.columnList = new Column[]{};
+            this.callButtonsList = new CallButton[]{};
+
+            for (int i = 0; i < this.amountOfColumns; i++){
+                columnList[i] = new Column();
+            }
+
+            for (int i = 0; i < this.amountOfFloors; i++){
+                callButtonsList[i] = new CallButton();
+            }
+            
+        }
     }
 
     // Column class
     public class Column{
+        public int ID;
+        public string status;
+        public int amountOfFloors;
+        public int amountOfElevators;
+        public Elevator[] elevatorsList;
+        public FloorRequestButton[] floorRequestButtonsList;
 
+        public Column(int id, string status, int amountOfFloors, int amountOfElevators, int servedFloors, bool isBasement){
+            
+            this.ID = id;
+            this.status = status;
+            this.amountOfFloors = amountOfFloors;
+            this.amountOfElevators = amountOfElevators;
+            this.elevatorsList = new Elevator[]{};
+            this.floorRequestButtonsList = new FloorRequestButton[]{};
+        }
     }
 
     // Elevator class
@@ -42,7 +73,7 @@ namespace C_
 
     // Door class
     public class Door{
-        
+
     }
 
 
@@ -51,11 +82,11 @@ namespace C_
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("----------------// TESTING //-------------------");
 
-            Battery test = new Battery();
-            test.ID = 1;
-            Console.WriteLine(test.ID);
+            Battery testBat = new Battery(1, "online", 4, 66, 6, 5);
+            Console.WriteLine(testBat.status);
+        
         }
 
     }
