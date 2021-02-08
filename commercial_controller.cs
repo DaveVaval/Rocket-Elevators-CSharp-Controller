@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace C_
 {
+    // Battery class
     public class Battery
     {
         public int ID;
@@ -17,6 +18,35 @@ namespace C_
         //     }
         // }
     }
+
+    // Column class
+    public class Column{
+
+    }
+
+    // Elevator class
+    public class Elevator{
+
+    }
+
+    // Call Button class
+    public class CallButton{
+
+    }
+
+    // Floor request button class
+    public class FloorRequestButton{
+
+    }
+
+
+    // Door class
+    public class Door{
+        
+    }
+
+
+    // Main Program
     class Program
     {
         static void Main(string[] args)
