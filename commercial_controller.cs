@@ -11,8 +11,8 @@ namespace C_
         public int amountOfFloors;
         public int amountOfColumns;
         public int amountOfBasements;
-        public Column[] columnList;
-        public CallButton[] callButtonsList;
+        public List<Column> columnList;
+        public List<CallButton> callButtonsList;
 
         public Battery(int id, string status,int amountOfColumns, int amountOfFloors, int amountOfBasements, int amountOfElevatorPerColumn)
         {
@@ -21,8 +21,8 @@ namespace C_
             this.status = status;
             this.amountOfFloors = amountOfFloors;
             this.amountOfBasements = amountOfBasements;
-            this.columnList = new Column[]{};
-            this.callButtonsList = new CallButton[]{};
+            this.columnList = new List<Column>(){};
+            this.callButtonsList = new List<CallButton>(){};
 
             for (int i = 0; i < this.amountOfColumns; i++){
                 columnList[i] = new Column();
@@ -41,8 +41,8 @@ namespace C_
         public string status;
         public int amountOfFloors;
         public int amountOfElevators;
-        public Elevator[] elevatorsList;
-        public FloorRequestButton[] floorRequestButtonsList;
+        public List<Elevator> elevatorsList;
+        public List<FloorRequestButton> floorRequestButtonsList;
 
         public Column(int id, string status, int amountOfFloors, int amountOfElevators, int servedFloors, bool isBasement){
             
@@ -50,30 +50,71 @@ namespace C_
             this.status = status;
             this.amountOfFloors = amountOfFloors;
             this.amountOfElevators = amountOfElevators;
-            this.elevatorsList = new Elevator[]{};
-            this.floorRequestButtonsList = new FloorRequestButton[]{};
+            this.elevatorsList = new List<Elevator>(){};
+            this.floorRequestButtonsList = new List<FloorRequestButton>(){};
         }
     }
 
     // Elevator class
     public class Elevator{
+        public int ID;
+        public string status;
+        public int amountOfFloors;
+        public string direction;
+        public int currentfloor;
+        public Door door;
+        public List<int> floorRequestList; // will have to come back to this
 
+        public Elevator(int id, string status, int amountOfFloors, string direction, int currentfloor){
+            
+            this.ID = id;
+            this.status = status;
+            this.amountOfFloors = amountOfFloors;
+            this.direction = null;
+            this.currentfloor = currentfloor;
+            this.door = new Door();
+            this.floorRequestList = new List<int>(){}; // will have to come back to this
+        }
     }
 
     // Call Button class
     public class CallButton{
+        public int ID;
+        public string status;
+        public int floor;
+        public string direction;
 
+        public CallButton(int id, string status, int floor, string direction){
+            this.ID = id;
+            this.status = status;
+            this.floor = floor;
+            this.direction = direction;
+        }
     }
 
     // Floor request button class
     public class FloorRequestButton{
+        public int ID;
+        public string status;
+        public int floor;
 
+        public FloorRequestButton(int id, string status, int floor){
+            this.ID = id;
+            this.status = status;
+            this.floor = floor;
+        }
     }
 
 
     // Door class
     public class Door{
+        public int ID;
+        public string status;
 
+        public Door(int id, string status){
+            this.ID = id;
+            this.status = status;
+        }
     }
 
 
