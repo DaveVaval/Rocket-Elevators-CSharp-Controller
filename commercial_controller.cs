@@ -19,6 +19,7 @@ namespace C_
         
         public Battery(int id, string status,int amountOfColumns, int amountOfFloors, int amountOfBasements, int amountOfElevatorPerColumn)
         {
+            // Battery testBat = new Battery(1, "online", 4, 60, 6, 5);
             this.ID = id;
             this.amountOfColumns = amountOfColumns;
             this.status = status;
@@ -29,12 +30,19 @@ namespace C_
             this.columnID = 1;
 
             if (this.amountOfBasements > 0){
-                createBasementColumn(amountOfBasements, amountOfElevatorPerColumn);
+                createBasementColumn(this.amountOfBasements, amountOfElevatorPerColumn);
                 amountOfColumns--;
             }
 
-            createColumns(amountOfColumns, amountOfFloors, amountOfBasements, amountOfElevatorPerColumn);
+            createColumns(amountOfColumns, this.amountOfFloors, this.amountOfBasements, amountOfElevatorPerColumn);
+            
 
+            foreach(Column col in columnsList)
+            {
+                System.Console.WriteLine("column: " + col.ID);
+                foreach(int floor in col.servedFloors)
+                    System.Console.WriteLine("    floor: " + floor);
+            }            
              
         }
 
@@ -42,7 +50,7 @@ namespace C_
             List<int> servedFloors = new List<int>();
             int floor = -1;
     
-            for (int i = 1; i < amountOfBasements; i++){
+            for (int i = 0; i < amountOfBasements; i++){
                 servedFloors.Add(floor);
                 floor--;
             }
@@ -54,10 +62,10 @@ namespace C_
             int amountOfFloorsPerColumn = (int)Math.Ceiling((double)amountOfFloors / amountOfColumns);
             int floor = 1;
 
-            for (int i = 1; i < amountOfColumns; i++){
+            for (int i = 1; i <= amountOfColumns; i++){ // i = i fixed the issue of the amount of columns
                 List<int> servedFloors = new List<int>(); 
-                for (int n = 1; n < amountOfFloorsPerColumn; n++){
-                    if(floor >= amountOfFloors){
+                for (int n = 0; n < amountOfFloorsPerColumn; n++){
+                    if(floor <= amountOfFloors){
                         servedFloors.Add(floor);
                         floor++;
                     }
@@ -78,6 +86,7 @@ namespace C_
         public string status;
         public int amountOfFloors;
         public int amountOfElevators;
+        public bool isBasement;
         public List<int> servedFloors;
         public List<Elevator> elevatorsList;
         public List<FloorRequestButton> floorRequestButtonsList;
@@ -88,9 +97,10 @@ namespace C_
             this.status = status;
             this.amountOfFloors = amountOfFloors;
             this.amountOfElevators = amountOfElevators;
+            this.isBasement = isBasement;
             this.elevatorsList = new List<Elevator>(){};
             this.floorRequestButtonsList = new List<FloorRequestButton>(){};
-            this.servedFloors = new List<int>(){};
+            this.servedFloors = servedFloors;
         }
     }
 
@@ -171,9 +181,18 @@ namespace C_
             Console.WriteLine("----------------// TESTING //-------------------");
 
             Battery testBat = new Battery(1, "online", 4, 60, 6, 5);
-            Console.WriteLine(testBat.status);
-            Console.WriteLine("....");
-            Console.WriteLine(testBat.columnsList[1]);
+            // Console.WriteLine("Battery: " + testBat.status);
+            // Console.WriteLine("------");
+            // Console.WriteLine(testBat.columnsList[1]);
+            // Console.WriteLine("Column ID: " + testBat.columnsList[1].ID);
+            // Console.WriteLine("status: " + testBat.columnsList[1].status);
+            // Console.WriteLine("floors: " + testBat.columnsList[1].amountOfFloors);
+            // Console.WriteLine("elevators: " + testBat.columnsList[1].amountOfElevators);
+            // Console.WriteLine("basement: " + testBat.columnsList[1].isBasement);
+            // Console.WriteLine("------");
+            // int amountOfFloorsPerColumn = (int)Math.Ceiling((double)60 / 4);
+            // Console.WriteLine(amountOfFloorsPerColumn);
+            Console.WriteLine("Amount of columns: " + testBat.amountOfColumns);
         }
 
     }
