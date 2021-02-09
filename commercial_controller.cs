@@ -179,38 +179,38 @@ namespace C_
             }
         }
 
-        // public void requestElevator(int userPosition, string direction){
-        //     Elevator elevator = findElevator(userPosition, direction); // return?
-        //     elevator.floorRequestList.Add(1);
-        //     elevator.sortFloorList();
-        //     elevator.move();
-        //     elevator.openDoors();
-        // }
+        public void requestElevator(int userPosition, string direction){
+            Elevator elevator = findElevator(userPosition, direction); // return?
+            elevator.floorRequestList.Add(1);
+            elevator.sortFloorList();
+            elevator.move();
+            elevator.openDoors();
+        }
 
-        // public void findElevator(int requestedFloor, string requestedDirection){ // return?
-        //     var bestElevatorInfo = new Hashtable(){
-        //         {"bestElevator", null},
-        //         {"bestScore", 6},
-        //         {"referenceGap", int.MaxValue}
-        //     };
-        //     return;   
-        // }
+        public void findElevator(int requestedFloor, string requestedDirection){ // return?
+            var bestElevatorInfo = new Hashtable(){
+                {"bestElevator", null},
+                {"bestScore", 6},
+                {"referenceGap", int.MaxValue}
+            };
+            return;
+        }
 
-        // public Hashtable checkElevator(int baseScore, Elevator elevator, int floor, Hashtable bestElevatorInfo){
-        //     if(baseScore > ){
-        //         bestElevatorInfo["bestScore"] = baseScore;
-        //         bestElevatorInfo["bestElevator"] = elevator;
-        //         bestElevatorInfo["referenceGap"] = (int)Math.Abs((double)elevator.currentfloor - floor);
-        //     }
-        //     else if(bestScore == baseScore){
-        //         int gap = (int)Math.Abs((double)elevator.currentfloor - floor);
-        //         if(referenceGap > gap){
-        //             bestElevator = elevator;
-        //             referenceGap = gap;
-        //         }
-        //     }
-        //     return bestElevatorInfo;
-        // }
+        public Hashtable checkElevator(int baseScore, Elevator elevator, int floor, Hashtable bestElevatorInfo){
+            if(baseScore < (int)bestElevatorInfo["bestScore"]){
+                bestElevatorInfo["bestScore"] = baseScore;
+                bestElevatorInfo["bestElevator"] = elevator;
+                bestElevatorInfo["referenceGap"] = (int)Math.Abs((double)elevator.currentfloor - floor);
+            }
+            else if((int)bestElevatorInfo["bestScore"] == baseScore){
+                int gap = (int)Math.Abs((double)elevator.currentfloor - floor);
+                if((int)bestElevatorInfo["referenceGap"] > gap){
+                    bestElevatorInfo["bestElevator"] = elevator;
+                    bestElevatorInfo["referenceGap"] = gap;
+                }
+            }
+            return bestElevatorInfo;
+        }
     }
 
 
@@ -302,6 +302,19 @@ namespace C_
             // int amountOfFloorsPerColumn = (int)Math.Ceiling((double)60 / 4);
             // Console.WriteLine(amountOfFloorsPerColumn);
             Console.WriteLine("Amount of columns: " + testBat.amountOfColumns);
+
+            // var testHash = new Hashtable(){
+            //     {"number", 6}
+            // };
+
+            // testHash["number"] = 10;
+
+            // Console.WriteLine("updated: " + testHash["number"]);
+            
+            // if( 1 > (int)testHash["number"]){
+                
+            // }
+            
         }
 
     }
