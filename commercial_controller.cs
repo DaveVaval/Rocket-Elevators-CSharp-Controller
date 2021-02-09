@@ -14,8 +14,9 @@ namespace C_
         public int amountOfColumns;
         public int amountOfBasements;
         public int columnID;
+        public int floorRequestButtonID;
         public List<Column> columnsList;
-        public List<CallButton> callButtonsList;
+        public List<FloorRequestButton> floorRequestButtonsList;
         
         public Battery(int id, string status,int amountOfColumns, int amountOfFloors, int amountOfBasements, int amountOfElevatorPerColumn)
         {
@@ -26,23 +27,25 @@ namespace C_
             this.amountOfFloors = amountOfFloors;
             this.amountOfBasements = amountOfBasements;
             this.columnsList = new List<Column>();
-            this.callButtonsList = new List<CallButton>();
+            this.floorRequestButtonsList = new List<FloorRequestButton>();
             this.columnID = 1;
+            this.floorRequestButtonID = 1;
 
             if (this.amountOfBasements > 0){
+                createBasementFloorRequestButtons(amountOfBasements);
                 createBasementColumn(this.amountOfBasements, amountOfElevatorPerColumn);
                 amountOfColumns--;
             }
-
+            createFloorRequestButtons(amountOfFloors);
             createColumns(amountOfColumns, this.amountOfFloors, this.amountOfBasements, amountOfElevatorPerColumn);
             
-
-            foreach(Column col in columnsList)
-            {
-                System.Console.WriteLine("column: " + col.ID);
-                foreach(int floor in col.servedFloors)
-                    System.Console.WriteLine("    floor: " + floor);
-            }            
+            // for debug only
+            // foreach(Column column in columnsList)
+            // {
+            //     System.Console.WriteLine("column: " + column.ID);
+            //     foreach(int floor in column.servedFloors)
+            //         System.Console.WriteLine("    floor: " + floor);
+            // }            
              
         }
 
@@ -62,7 +65,7 @@ namespace C_
             int amountOfFloorsPerColumn = (int)Math.Ceiling((double)amountOfFloors / amountOfColumns);
             int floor = 1;
 
-            for (int i = 1; i <= amountOfColumns; i++){ // i = i fixed the issue of the amount of columns
+            for (int i = 1; i <= amountOfColumns; i++){ // i = 1 fixed the issue of the amount of columns
                 List<int> servedFloors = new List<int>(); 
                 for (int n = 0; n < amountOfFloorsPerColumn; n++){
                     if(floor <= amountOfFloors){
@@ -75,7 +78,40 @@ namespace C_
             }
         }
 
-        // public void createCallButtons
+        public void createFloorRequestButtons(int amountOfFloors){
+            int buttonFloor = 1;
+            for (int i = 1; i <= amountOfFloors; i++){
+                floorRequestButtonsList.Add(new FloorRequestButton(floorRequestButtonID, "off", buttonFloor));
+                floorRequestButtonID++;
+                buttonFloor++;
+            }
+        }
+
+        public void createBasementFloorRequestButtons(int amountOfBasements){
+            int buttonFloor = -1;
+            for (int i = 1; i <= amountOfBasements; i++){
+                floorRequestButtonsList.Add(new FloorRequestButton(floorRequestButtonID, "off", buttonFloor));
+                buttonFloor--;
+                floorRequestButtonID++;
+            }
+        }
+
+        public Column findBestColumn(int requestedFloor){ // what?
+            foreach (Column column in columnsList){
+                if(column.servedFloors.Contains(requestedFloor)){
+                    return column;
+                }
+            }
+        }
+
+        public void assignElevator(int requestedFloor, string direction){
+            column = findBestColumn(requestedFloor); // return?
+            elevator = findElevator(1, direction); // return?
+            elevator.floorRequestList.Add(requestedFloor);
+            elevator.sortFloorList();
+            elevator.move();
+            elevator.openDoors();
+        }
     }
 
 
@@ -101,6 +137,16 @@ namespace C_
             this.elevatorsList = new List<Elevator>(){};
             this.floorRequestButtonsList = new List<FloorRequestButton>(){};
             this.servedFloors = servedFloors;
+            createElevators(amountOfFloors, amountOfElevators);
+            createCallButtons(amountOfFloors, isBasement);
+        }
+
+
+        public void createElevators(int amountOfFloors, int amountOfElevators){
+            int elevatorID = 1;
+            for(int i = 0; i < amountOfElevators; i++){
+                elevatorsList.Add()
+            }
         }
     }
 
