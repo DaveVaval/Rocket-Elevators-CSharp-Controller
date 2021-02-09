@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 
 
 
@@ -40,12 +41,12 @@ namespace C_
             createColumns(amountOfColumns, this.amountOfFloors, this.amountOfBasements, amountOfElevatorPerColumn);
             
             // for debug only
-            foreach(Column column in columnsList)
-            {
-                System.Console.WriteLine("column: " + column.ID);
-                foreach(Elevator elevator in column.elevatorsList)
-                    System.Console.WriteLine("    elevator: " + elevator.ID);
-            }            
+            // foreach(Column column in columnsList)
+            // {
+            //     System.Console.WriteLine("column: " + column.ID);
+            //     foreach(Elevator elevator in column.elevatorsList)
+            //         System.Console.WriteLine("    elevator: " + elevator.ID);
+            // }            
              
         }
 
@@ -178,38 +179,38 @@ namespace C_
             }
         }
 
-        public void requestElevator(int userPosition, string direction){
-            Elevator elevator = findElevator(userPosition, direction); // return?
-            elevator.floorRequestList.Add(1);
-            elevator.sortFloorList();
-            elevator.move();
-            elevator.openDoors();
-        }
+        // public void requestElevator(int userPosition, string direction){
+        //     Elevator elevator = findElevator(userPosition, direction); // return?
+        //     elevator.floorRequestList.Add(1);
+        //     elevator.sortFloorList();
+        //     elevator.move();
+        //     elevator.openDoors();
+        // }
 
-        public Elevator findElevator(int requestedFloor, string requestedDirection){ // return?
-            struct bestElevatorInfo {
-            Elevator bestElevator = null;
-            int bestScore = 6;
-            int referenceGap = int.MaxValue;
+        // public void findElevator(int requestedFloor, string requestedDirection){ // return?
+        //     var bestElevatorInfo = new Hashtable(){
+        //         {"bestElevator", null},
+        //         {"bestScore", 6},
+        //         {"referenceGap", int.MaxValue}
+        //     };
+        //     return;   
+        // }
 
-            }
-        }
-
-        public Elevator checkElevator(int baseScore, Elevator elevator, int bestScore, int referenceGap, Elevator bestElevator, int floor){
-            if(baseScore > bestScore){
-                bestScore = baseScore;
-                bestElevator = elevator;
-                referenceGap = (int)Math.Abs((double)elevator.currentfloor - floor);
-            }
-            else if(bestScore == baseScore){
-                int gap = (int)Math.Abs((double)elevator.currentfloor - floor);
-                if(referenceGap > gap){
-                    bestElevator = elevator;
-                    referenceGap = gap;
-                }
-            }
-            return bestElevatorInfo(bestElevator, bestScore, referenceGap);
-        }
+        // public Hashtable checkElevator(int baseScore, Elevator elevator, int floor, Hashtable bestElevatorInfo){
+        //     if(baseScore > ){
+        //         bestElevatorInfo["bestScore"] = baseScore;
+        //         bestElevatorInfo["bestElevator"] = elevator;
+        //         bestElevatorInfo["referenceGap"] = (int)Math.Abs((double)elevator.currentfloor - floor);
+        //     }
+        //     else if(bestScore == baseScore){
+        //         int gap = (int)Math.Abs((double)elevator.currentfloor - floor);
+        //         if(referenceGap > gap){
+        //             bestElevator = elevator;
+        //             referenceGap = gap;
+        //         }
+        //     }
+        //     return bestElevatorInfo;
+        // }
     }
 
 
