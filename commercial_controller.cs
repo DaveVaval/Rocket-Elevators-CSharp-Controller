@@ -187,13 +187,55 @@ namespace C_
             elevator.openDoors();
         }
 
-        public void findElevator(int requestedFloor, string requestedDirection){ // return?
+        public object findElevator(int requestedFloor, string requestedDirection){ // return?
             var bestElevatorInfo = new Hashtable(){
                 {"bestElevator", null},
                 {"bestScore", 6},
                 {"referenceGap", int.MaxValue}
             };
-            return;
+            if(requestedFloor == 1){
+                foreach(Elevator elevator in elevatorsList){
+                    if(1 == elevator.currentfloor && elevator.status == "stopped"){
+                        bestElevatorInfo = checkElevator(1, elevator, requestedFloor, bestElevatorInfo);
+                    }
+                    else if(1 == elevator.currentfloor && elevator.status == "idle"){
+                        bestElevatorInfo = checkElevator(2, elevator, requestedFloor, bestElevatorInfo);
+                    }
+                    else if(1 > elevator.currentfloor && elevator.direction == "up"){
+                        bestElevatorInfo = checkElevator(3, elevator, requestedFloor, bestElevatorInfo);
+                    }
+                    else if(1 < elevator.currentfloor && elevator.direction == "down"){
+                        bestElevatorInfo = checkElevator(3, elevator, requestedFloor, bestElevatorInfo);
+                    }
+                    else if(elevator.status == "idle"){
+                        bestElevatorInfo = checkElevator(4, elevator, requestedFloor, bestElevatorInfo);
+                    }
+                    else{
+                        bestElevatorInfo = checkElevator(5, elevator, requestedFloor, bestElevatorInfo);
+                    }
+                    // hmmmm?
+                }
+            }
+            else{
+                foreach(Elevator elevator in elevatorsList){
+                    if(requestedFloor == elevator.currentfloor && elevator.status == "stopped" && requestedDirection == elevator.direction){
+                        bestElevatorInfo = checkElevator(1, elevator, requestedFloor, bestElevatorInfo);
+                    }
+                    else if(requestedFloor > elevator.currentfloor  && elevator.direction == "up" && requestedDirection == "up"){
+                        bestElevatorInfo = checkElevator(2, elevator, requestedFloor, bestElevatorInfo);
+                    }
+                    else if(requestedFloor < elevator.currentfloor  && elevator.direction == "down" && requestedDirection == "down"){
+                        bestElevatorInfo = checkElevator(2, elevator, requestedFloor, bestElevatorInfo);
+                    }
+                    else if(elevator.status == "idle"){
+                        bestElevatorInfo = checkElevator(4, elevator, requestedFloor, bestElevatorInfo);
+                    }
+                    else{
+                        bestElevatorInfo = checkElevator(5, elevator, requestedFloor, bestElevatorInfo);
+                    }
+                }
+            }
+            return bestElevatorInfo["bestElevator"]; // need to make sure this works
         }
 
         public Hashtable checkElevator(int baseScore, Elevator elevator, int floor, Hashtable bestElevatorInfo){
@@ -232,8 +274,33 @@ namespace C_
             this.amountOfFloors = amountOfFloors;
             this.direction = null;
             this.currentfloor = currentfloor;
-            // this.door = new Door();
+            this.door = new Door(id, "closed");
             this.floorRequestList = new List<int>(){}; // will have to come back to this
+        }
+
+        public void move(){
+            while(floorRequestList.Count != 0){
+                int destination = floorRequestList[0];
+                status = "moving";
+                if(currentfloor < destination){
+                    direction = "up";
+                    while(currentfloor < destination){
+                        currentfloor++;
+                    }
+                }
+                else if(currentfloor > destination){
+                    direction = "down";
+                    while(currentfloor > destination){
+                        currentfloor--;
+                    }
+                }
+                status = "idle";
+                floorRequestList.RemoveAt(0);
+            }
+        }
+
+        public void sortFloorList(){
+            
         }
     }
 
