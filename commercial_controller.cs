@@ -40,12 +40,12 @@ namespace C_
             createColumns(amountOfColumns, this.amountOfFloors, this.amountOfBasements, amountOfElevatorPerColumn);
             
             // for debug only
-            // foreach(Column column in columnsList)
-            // {
-            //     System.Console.WriteLine("column: " + column.ID);
-            //     foreach(int floor in column.servedFloors)
-            //         System.Console.WriteLine("    floor: " + floor);
-            // }            
+            foreach(Column column in columnsList)
+            {
+                System.Console.WriteLine("column: " + column.ID);
+                foreach(Elevator elevator in column.elevatorsList)
+                    System.Console.WriteLine("    elevator: " + elevator.ID);
+            }            
              
         }
 
@@ -96,22 +96,22 @@ namespace C_
             }
         }
 
-        public Column findBestColumn(int requestedFloor){ // what?
-            foreach (Column column in columnsList){
-                if(column.servedFloors.Contains(requestedFloor)){
-                    return column;
-                }
-            }
-        }
+        // public Column findBestColumn(int requestedFloor){ // what?
+        //     foreach (Column column in columnsList){
+        //         if(column.servedFloors.Contains(requestedFloor)){
+        //             return column;
+        //         }
+        //     }
+        // }
 
-        public void assignElevator(int requestedFloor, string direction){
-            column = findBestColumn(requestedFloor); // return?
-            elevator = findElevator(1, direction); // return?
-            elevator.floorRequestList.Add(requestedFloor);
-            elevator.sortFloorList();
-            elevator.move();
-            elevator.openDoors();
-        }
+        // public void assignElevator(int requestedFloor, string direction){
+        //     Column column = findBestColumn(requestedFloor); // return?
+        //     Elevator elevator = findElevator(1, direction); // return?
+        //     elevator.floorRequestList.Add(requestedFloor);
+        //     elevator.sortFloorList();
+        //     elevator.move();
+        //     elevator.openDoors();
+        // }
     }
 
 
@@ -125,7 +125,7 @@ namespace C_
         public bool isBasement;
         public List<int> servedFloors;
         public List<Elevator> elevatorsList;
-        public List<FloorRequestButton> floorRequestButtonsList;
+        public List<CallButton> callButtonsList;
 
         public Column(int id, string status, int amountOfFloors, int amountOfElevators, List<int> servedFloors, bool isBasement){
             
@@ -135,18 +135,80 @@ namespace C_
             this.amountOfElevators = amountOfElevators;
             this.isBasement = isBasement;
             this.elevatorsList = new List<Elevator>(){};
-            this.floorRequestButtonsList = new List<FloorRequestButton>(){};
+            this.callButtonsList = new List<CallButton>(){};
             this.servedFloors = servedFloors;
             createElevators(amountOfFloors, amountOfElevators);
             createCallButtons(amountOfFloors, isBasement);
+
+            // debug
+            // foreach(Elevator elevator in elevatorsList)
+            // {
+            //     System.Console.WriteLine("elevator: " + elevator.ID);
+            //     // foreach(int floor in column.servedFloors)
+            //     //     System.Console.WriteLine("    floor: " + floor);
+            // } 
         }
 
 
         public void createElevators(int amountOfFloors, int amountOfElevators){
             int elevatorID = 1;
             for(int i = 0; i < amountOfElevators; i++){
-                elevatorsList.Add()
+                elevatorsList.Add(new Elevator(elevatorID, "idle", amountOfFloors, 1));
+                elevatorID++;
             }
+        }
+
+        public void createCallButtons(int amountOfFloors, bool isBasement){
+            int callButtonID = 1;
+            if (isBasement == true){
+                int buttonFloor = -1;
+                for(int i = 0; i < amountOfFloors; i++){
+                    callButtonsList.Add(new CallButton(callButtonID, "off", buttonFloor, "up"));
+                    buttonFloor--;
+                    callButtonID++;
+                }
+            } 
+            else{
+                int buttonFloor = 1;
+                for(int i = 0; i < amountOfFloors; i++){
+                    callButtonsList.Add(new CallButton(callButtonID, "off", buttonFloor, "down"));
+                    buttonFloor++;
+                    callButtonID++;
+                }
+            }
+        }
+
+        public void requestElevator(int userPosition, string direction){
+            Elevator elevator = findElevator(userPosition, direction); // return?
+            elevator.floorRequestList.Add(1);
+            elevator.sortFloorList();
+            elevator.move();
+            elevator.openDoors();
+        }
+
+        public Elevator findElevator(int requestedFloor, string requestedDirection){ // return?
+            struct bestElevatorInfo {
+            Elevator bestElevator = null;
+            int bestScore = 6;
+            int referenceGap = int.MaxValue;
+
+            }
+        }
+
+        public Elevator checkElevator(int baseScore, Elevator elevator, int bestScore, int referenceGap, Elevator bestElevator, int floor){
+            if(baseScore > bestScore){
+                bestScore = baseScore;
+                bestElevator = elevator;
+                referenceGap = (int)Math.Abs((double)elevator.currentfloor - floor);
+            }
+            else if(bestScore == baseScore){
+                int gap = (int)Math.Abs((double)elevator.currentfloor - floor);
+                if(referenceGap > gap){
+                    bestElevator = elevator;
+                    referenceGap = gap;
+                }
+            }
+            return bestElevatorInfo(bestElevator, bestScore, referenceGap);
         }
     }
 
