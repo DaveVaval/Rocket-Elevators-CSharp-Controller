@@ -39,9 +39,12 @@ namespace C_
             createColumns(amountOfColumns, this.amountOfFloors, this.amountOfBasements, amountOfElevatorPerColumn);
             
             // for debug only
-            // foreach(Column column in columnsList)
-            // {
+            // foreach(Column column in columnsList){
             //     System.Console.WriteLine("column: " + column.ID);
+
+            //     foreach(int floor in column.servedFloors)
+            //         System.Console.WriteLine(" serve floor: " + floor);
+
             //     foreach(Elevator elevator in column.elevatorsList)
             //         System.Console.WriteLine("    elevator: " + elevator.ID);
             // }
@@ -104,13 +107,20 @@ namespace C_
             return col;
         }
 
-        public void assignElevator(int requestedFloor, string direction){
+        public Elevator assignElevator(int requestedFloor, string direction){
+            // foreach(Column col in columnsList)
+            //     foreach(Elevator elev in col.elevatorsList)
+            //         elev.move();
+
             Column column = findBestColumn(requestedFloor); // return?
             Elevator elevator = column.findElevator(1, direction); // return?
             elevator.floorRequestList.Add(requestedFloor);
             elevator.sortFloorList();
             elevator.move();
             elevator.openDoors();
+            // Console.WriteLine("Elevator " + column.ID  + elevator.ID + " is sent to floor: " + elevator.currentfloor);
+            Console.WriteLine("Elevator {0} from column {1} is sent to floor: {2}", elevator.ID, column.ID, elevator.currentfloor);
+            return elevator;
         }
     }
 
@@ -267,14 +277,21 @@ namespace C_
         public List<int> floorRequestList; // will have to come back to this
 
         public Elevator(int id, string status, int amountOfFloors, int currentfloor){
-            
             this.ID = id;
             this.status = status;
             this.amountOfFloors = amountOfFloors;
             this.direction = null;
             this.currentfloor = currentfloor;
             this.door = new Door(id, "closed");
-            this.floorRequestList = new List<int>(){}; // will have to come back to this
+            this.floorRequestList = new List<int>(); // will have to come back to this
+        }
+
+        public void requestFloor(int requestedFloor){
+            floorRequestList.Add(requestedFloor);
+            sortFloorList();
+            move();
+            Console.WriteLine("Elevator reached floor: " + this.currentfloor);
+            openDoors();
         }
 
         public void move(){
@@ -331,7 +348,6 @@ namespace C_
     }
 
 
-
     // Floor request button class
     public class FloorRequestButton{
         public int ID;
@@ -363,13 +379,118 @@ namespace C_
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("----------------// TESTING //-------------------");
+            Console.WriteLine("-----------------------------// TESTING //--------------------------------");
+            Battery battery = new Battery(1, "online", 4, 60, 6, 5);
+            // Console.WriteLine("Amount of columns: " + battery.amountOfColumns);
+            void Scenario1(){
+                //---------------------------------------------------------// Scenario 1 //------------------------------------------------------------
+                // B1
+                battery.columnsList[1].elevatorsList[0].currentfloor = 20;
+                battery.columnsList[1].elevatorsList[0].direction = "down";
+                battery.columnsList[1].elevatorsList[0].floorRequestList.Add(5);
 
-            Battery testBat = new Battery(1, "online", 4, 60, 6, 5);
-            Console.WriteLine("Amount of columns: " + testBat.amountOfColumns);
+                // B2
+                battery.columnsList[1].elevatorsList[1].currentfloor = 3;
+                battery.columnsList[1].elevatorsList[1].direction = "up";
+                battery.columnsList[1].elevatorsList[1].floorRequestList.Add(15);
 
-            
+                // B3
+                battery.columnsList[1].elevatorsList[2].currentfloor = 13;
+                battery.columnsList[1].elevatorsList[2].direction = "down";
+                battery.columnsList[1].elevatorsList[2].floorRequestList.Add(1);
+
+                // B4
+                battery.columnsList[1].elevatorsList[3].currentfloor = 15;
+                battery.columnsList[1].elevatorsList[3].direction = "down";
+                battery.columnsList[1].elevatorsList[3].floorRequestList.Add(2);
+
+                // B5
+                battery.columnsList[1].elevatorsList[4].currentfloor = 6;
+                battery.columnsList[1].elevatorsList[4].direction = "down";
+                battery.columnsList[1].elevatorsList[4].floorRequestList.Add(1);
+                
+                // User at lobby want's to go to floor 20, Elevator 5 should be sent
+                Console.WriteLine("User is at the lobby and wants to go to floor 20");
+                Console.WriteLine("He enters 20 on the pannel");
+                Console.WriteLine(".........");
+                Elevator elevator = battery.assignElevator(20, "up");
+                Console.WriteLine("He enters the elevator");
+                elevator.requestFloor(20);
+                Console.WriteLine("He gets out...");
+            }
+
+
+            void Scenario2(){
+            //--------------------------------------------// Scenario 2 //-----------------------------------------------------
+            // C1
+                battery.columnsList[2].elevatorsList[0].currentfloor = 1;
+                battery.columnsList[2].elevatorsList[0].direction = "up";
+                battery.columnsList[2].elevatorsList[0].floorRequestList.Add(21);
+
+                // C2
+                battery.columnsList[2].elevatorsList[1].currentfloor = 23;
+                battery.columnsList[2].elevatorsList[1].direction = "up";
+                battery.columnsList[2].elevatorsList[1].floorRequestList.Add(28);
+
+                // C3
+                battery.columnsList[2].elevatorsList[2].currentfloor = 33;
+                battery.columnsList[2].elevatorsList[2].direction = "down";
+                battery.columnsList[2].elevatorsList[2].floorRequestList.Add(1);
+
+                // C4
+                battery.columnsList[2].elevatorsList[3].currentfloor = 40;
+                battery.columnsList[2].elevatorsList[3].direction = "down";
+                battery.columnsList[2].elevatorsList[3].floorRequestList.Add(24);
+
+                // C5
+                battery.columnsList[2].elevatorsList[4].currentfloor = 39;
+                battery.columnsList[2].elevatorsList[4].direction = "down";
+                battery.columnsList[2].elevatorsList[4].floorRequestList.Add(1);
+                
+                // User at lobby want's to go to floor 36, Elevator 1 should be sent
+                Console.WriteLine("User is at the lobby and wants to go to floor 36");
+                Console.WriteLine("He enters 36 on the pannel");
+                Console.WriteLine(".........");
+                Elevator elevator = battery.assignElevator(36, "up");
+                Console.WriteLine("He enters the elevator");
+                elevator.requestFloor(36);
+                Console.WriteLine("He gets out...");
+            }
+
+            //--------------------------------------------// Scenario 3 //-----------------------------------------------------
+            // D1
+                battery.columnsList[3].elevatorsList[0].currentfloor = 58;
+                battery.columnsList[3].elevatorsList[0].direction = "down";
+                battery.columnsList[3].elevatorsList[0].floorRequestList.Add(1);
+
+                // D2
+                battery.columnsList[3].elevatorsList[1].currentfloor = 50;
+                battery.columnsList[3].elevatorsList[1].direction = "up";
+                battery.columnsList[3].elevatorsList[1].floorRequestList.Add(60);
+
+                // D3
+                battery.columnsList[3].elevatorsList[2].currentfloor = 46;
+                battery.columnsList[3].elevatorsList[2].direction = "up";
+                battery.columnsList[3].elevatorsList[2].floorRequestList.Add(58);
+
+                // D4
+                battery.columnsList[3].elevatorsList[3].currentfloor = 1;
+                battery.columnsList[3].elevatorsList[3].direction = "up";
+                battery.columnsList[3].elevatorsList[3].floorRequestList.Add(54);
+
+                // D5
+                battery.columnsList[3].elevatorsList[4].currentfloor = 60;
+                battery.columnsList[3].elevatorsList[4].direction = "down";
+                battery.columnsList[3].elevatorsList[4].floorRequestList.Add(1);
+                
+                // User at floor 54 want's to go to floor 1, Elevator 1 should be sent
+                Console.WriteLine("User is at floor 54 and wants to go to the lobby");
+                Console.WriteLine("He presses on the pannel");
+                Console.WriteLine(".........");
+                Elevator elevator = battery.assignElevator(54, "down");
+                Console.WriteLine("He enters the elevator");
+                elevator.requestFloor(1);
+                Console.WriteLine("He gets out...");
         }
-
     }
 }
