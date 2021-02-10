@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections;
 
-
-
 namespace C_
 {
     // Battery class
@@ -46,8 +44,7 @@ namespace C_
             //     System.Console.WriteLine("column: " + column.ID);
             //     foreach(Elevator elevator in column.elevatorsList)
             //         System.Console.WriteLine("    elevator: " + elevator.ID);
-            // }            
-             
+            // }
         }
 
         public void createBasementColumn(int amountOfBasements, int amountOfElevatorPerColumn){
@@ -98,11 +95,13 @@ namespace C_
         }
 
         public Column findBestColumn(int requestedFloor){ // what?
+            Column col = null;
             foreach (Column column in columnsList){
                 if(column.servedFloors.Contains(requestedFloor)){
-                    return column;
+                    col = column;
                 }
             }
+            return col;
         }
 
         public void assignElevator(int requestedFloor, string direction){
@@ -114,7 +113,6 @@ namespace C_
             elevator.openDoors();
         }
     }
-
 
 
     // Column class
@@ -368,31 +366,10 @@ namespace C_
             Console.WriteLine("----------------// TESTING //-------------------");
 
             Battery testBat = new Battery(1, "online", 4, 60, 6, 5);
-            // Console.WriteLine("Battery: " + testBat.status);
-            // Console.WriteLine("------");
-            // Console.WriteLine(testBat.columnsList[1]);
-            // Console.WriteLine("Column ID: " + testBat.columnsList[1].ID);
-            // Console.WriteLine("status: " + testBat.columnsList[1].status);
-            // Console.WriteLine("floors: " + testBat.columnsList[1].amountOfFloors);
-            // Console.WriteLine("elevators: " + testBat.columnsList[1].amountOfElevators);
-            // Console.WriteLine("basement: " + testBat.columnsList[1].isBasement);
-            // Console.WriteLine("------");
-            // int amountOfFloorsPerColumn = (int)Math.Ceiling((double)60 / 4);
-            // Console.WriteLine(amountOfFloorsPerColumn);
             Console.WriteLine("Amount of columns: " + testBat.amountOfColumns);
-
-            var testHash = new Hashtable(){
-                {"number", 6}
-            };
-
-            testHash["number"] = (int)Math.Abs((double)15 - 2.5);
-
-            Console.WriteLine(testHash["number"]);
 
             
         }
 
     }
 }
-
-
