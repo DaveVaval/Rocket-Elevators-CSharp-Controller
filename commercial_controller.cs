@@ -245,13 +245,13 @@ namespace C_
                 bestElevatorInfo["bestElevator"] = elevator;
                 bestElevatorInfo["referenceGap"] = (int)Math.Abs((double)elevator.currentfloor - floor);
             }
-            else if((int)bestElevatorInfo["bestScore"] == baseScore){
-                int gap = (int)Math.Abs((double)elevator.currentfloor - floor);
-                if((int)bestElevatorInfo["referenceGap"] > gap){
-                    bestElevatorInfo["bestElevator"] = elevator;
-                    bestElevatorInfo["referenceGap"] = gap;
-                }
-            }
+            // else if((int)bestElevatorInfo["bestScore"] == baseScore){
+            //     int gap = (int)Math.Abs((double)elevator.currentfloor - floor);
+            //     if((int)bestElevatorInfo["referenceGap"] > gap){
+            //         bestElevatorInfo["bestElevator"] = elevator;
+            //         bestElevatorInfo["referenceGap"] = gap;
+            //     }
+            // }
             return bestElevatorInfo;
         }
     }
