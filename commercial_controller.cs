@@ -97,22 +97,22 @@ namespace C_
             }
         }
 
-        // public Column findBestColumn(int requestedFloor){ // what?
-        //     foreach (Column column in columnsList){
-        //         if(column.servedFloors.Contains(requestedFloor)){
-        //             return column;
-        //         }
-        //     }
-        // }
+        public Column findBestColumn(int requestedFloor){ // what?
+            foreach (Column column in columnsList){
+                if(column.servedFloors.Contains(requestedFloor)){
+                    return column;
+                }
+            }
+        }
 
-        // public void assignElevator(int requestedFloor, string direction){
-        //     Column column = findBestColumn(requestedFloor); // return?
-        //     Elevator elevator = findElevator(1, direction); // return?
-        //     elevator.floorRequestList.Add(requestedFloor);
-        //     elevator.sortFloorList();
-        //     elevator.move();
-        //     elevator.openDoors();
-        // }
+        public void assignElevator(int requestedFloor, string direction){
+            Column column = findBestColumn(requestedFloor); // return?
+            Elevator elevator = column.findElevator(1, direction); // return?
+            elevator.floorRequestList.Add(requestedFloor);
+            elevator.sortFloorList();
+            elevator.move();
+            elevator.openDoors();
+        }
     }
 
 
@@ -179,16 +179,17 @@ namespace C_
             }
         }
 
-        public void requestElevator(int userPosition, string direction){
+        public Elevator requestElevator(int userPosition, string direction){
             Elevator elevator = findElevator(userPosition, direction); // return?
             elevator.floorRequestList.Add(1);
             elevator.sortFloorList();
             elevator.move();
             elevator.openDoors();
+            return elevator;
         }
 
-        public object findElevator(int requestedFloor, string requestedDirection){ // return?
-            var bestElevatorInfo = new Hashtable(){
+        public Elevator findElevator(int requestedFloor, string requestedDirection){ // return?
+            Hashtable bestElevatorInfo = new Hashtable(){
                 {"bestElevator", null},
                 {"bestScore", 6},
                 {"referenceGap", int.MaxValue}
@@ -235,7 +236,7 @@ namespace C_
                     }
                 }
             }
-            return bestElevatorInfo["bestElevator"]; // need to make sure this works
+            return (Elevator)bestElevatorInfo["bestElevator"]; // need to make sure this works
         }
 
         public Hashtable checkElevator(int baseScore, Elevator elevator, int floor, Hashtable bestElevatorInfo){
@@ -300,7 +301,17 @@ namespace C_
         }
 
         public void sortFloorList(){
-            
+           if(direction == "up"){
+               floorRequestList.Sort();
+           }
+           else{
+               floorRequestList.Reverse();
+           }
+        }
+
+        public void openDoors(){
+            door.status = "open";
+            door.status = "closed";
         }
     }
 
@@ -370,17 +381,14 @@ namespace C_
             // Console.WriteLine(amountOfFloorsPerColumn);
             Console.WriteLine("Amount of columns: " + testBat.amountOfColumns);
 
-            // var testHash = new Hashtable(){
-            //     {"number", 6}
-            // };
+            var testHash = new Hashtable(){
+                {"number", 6}
+            };
 
-            // testHash["number"] = 10;
+            testHash["number"] = (int)Math.Abs((double)15 - 2.5);
 
-            // Console.WriteLine("updated: " + testHash["number"]);
-            
-            // if( 1 > (int)testHash["number"]){
-                
-            // }
+            Console.WriteLine(testHash["number"]);
+
             
         }
 
