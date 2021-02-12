@@ -359,137 +359,138 @@ namespace C_
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("-----------------------------// TESTING //--------------------------------");
+            // Console.WriteLine("-----------------------------// Rocket Elevators //--------------------------------");
             Battery battery = new Battery(1, "online", 4, 60, 6, 5);
-            // Console.WriteLine("Amount of columns: " + battery.amountOfColumns);
-            void Scenario1(){
-                //---------------------------------------------------------// Scenario 1 //------------------------------------------------------------
-                // B1
-                battery.columnsList[1].elevatorsList[0].currentFloor = 20;
-                battery.columnsList[1].elevatorsList[0].direction = "down";
-                battery.columnsList[1].elevatorsList[0].floorRequestList.Add(5);
+            
+            
+            // void Scenario1(){
+            //     //---------------------------------------------------------// Scenario 1 //------------------------------------------------------------
+            //     // B1
+            //     battery.columnsList[1].elevatorsList[0].currentFloor = 20;
+            //     battery.columnsList[1].elevatorsList[0].direction = "down";
+            //     battery.columnsList[1].elevatorsList[0].floorRequestList.Add(5);
 
-                // B2
-                battery.columnsList[1].elevatorsList[1].currentFloor = 3;
-                battery.columnsList[1].elevatorsList[1].direction = "up";
-                battery.columnsList[1].elevatorsList[1].floorRequestList.Add(15);
+            //     // B2
+            //     battery.columnsList[1].elevatorsList[1].currentFloor = 3;
+            //     battery.columnsList[1].elevatorsList[1].direction = "up";
+            //     battery.columnsList[1].elevatorsList[1].floorRequestList.Add(15);
 
-                // B3
-                battery.columnsList[1].elevatorsList[2].currentFloor = 13;
-                battery.columnsList[1].elevatorsList[2].direction = "down";
-                battery.columnsList[1].elevatorsList[2].floorRequestList.Add(1);
+            //     // B3
+            //     battery.columnsList[1].elevatorsList[2].currentFloor = 13;
+            //     battery.columnsList[1].elevatorsList[2].direction = "down";
+            //     battery.columnsList[1].elevatorsList[2].floorRequestList.Add(1);
 
-                // B4
-                battery.columnsList[1].elevatorsList[3].currentFloor = 15;
-                battery.columnsList[1].elevatorsList[3].direction = "down";
-                battery.columnsList[1].elevatorsList[3].floorRequestList.Add(2);
+            //     // B4
+            //     battery.columnsList[1].elevatorsList[3].currentFloor = 15;
+            //     battery.columnsList[1].elevatorsList[3].direction = "down";
+            //     battery.columnsList[1].elevatorsList[3].floorRequestList.Add(2);
 
-                // B5
-                battery.columnsList[1].elevatorsList[4].currentFloor = 6;
-                battery.columnsList[1].elevatorsList[4].direction = "down";
-                battery.columnsList[1].elevatorsList[4].floorRequestList.Add(1);
-                battery.columnsList[1].elevatorsList[4].move();
+            //     // B5
+            //     battery.columnsList[1].elevatorsList[4].currentFloor = 6;
+            //     battery.columnsList[1].elevatorsList[4].direction = "down";
+            //     battery.columnsList[1].elevatorsList[4].floorRequestList.Add(1);
+            //     battery.columnsList[1].elevatorsList[4].move();
                 
-                // User at lobby want's to go to floor 20, Elevator 5 should be sent
-                Console.WriteLine("User is at the lobby and wants to go to floor 20");
-                Console.WriteLine("He enters 20 on the pannel");
-                battery.assignElevator(20, "up");
-            }
+            //     // User at lobby want's to go to floor 20, Elevator 5 should be sent
+            //     Console.WriteLine("User is at the lobby and wants to go to floor 20");
+            //     Console.WriteLine("He enters 20 on the pannel");
+            //     battery.assignElevator(20, "up");
+            // }
 
-            void Scenario2(){
-            //--------------------------------------------// Scenario 2 //-----------------------------------------------------
-            // C1
-                battery.columnsList[2].elevatorsList[0].currentFloor = 1;
-                battery.columnsList[2].elevatorsList[0].direction = "up";
-                battery.columnsList[2].elevatorsList[0].floorRequestList.Add(21);
+            // void Scenario2(){
+            // //--------------------------------------------// Scenario 2 //-----------------------------------------------------
+            // // C1
+            //     battery.columnsList[2].elevatorsList[0].currentFloor = 1;
+            //     battery.columnsList[2].elevatorsList[0].direction = "up";
+            //     battery.columnsList[2].elevatorsList[0].floorRequestList.Add(21);
 
-                // C2
-                battery.columnsList[2].elevatorsList[1].currentFloor = 23;
-                battery.columnsList[2].elevatorsList[1].direction = "up";
-                battery.columnsList[2].elevatorsList[1].floorRequestList.Add(28);
+            //     // C2
+            //     battery.columnsList[2].elevatorsList[1].currentFloor = 23;
+            //     battery.columnsList[2].elevatorsList[1].direction = "up";
+            //     battery.columnsList[2].elevatorsList[1].floorRequestList.Add(28);
 
-                // C3
-                battery.columnsList[2].elevatorsList[2].currentFloor = 33;
-                battery.columnsList[2].elevatorsList[2].direction = "down";
-                battery.columnsList[2].elevatorsList[2].floorRequestList.Add(1);
+            //     // C3
+            //     battery.columnsList[2].elevatorsList[2].currentFloor = 33;
+            //     battery.columnsList[2].elevatorsList[2].direction = "down";
+            //     battery.columnsList[2].elevatorsList[2].floorRequestList.Add(1);
 
-                // C4
-                battery.columnsList[2].elevatorsList[3].currentFloor = 40;
-                battery.columnsList[2].elevatorsList[3].direction = "down";
-                battery.columnsList[2].elevatorsList[3].floorRequestList.Add(24);
+            //     // C4
+            //     battery.columnsList[2].elevatorsList[3].currentFloor = 40;
+            //     battery.columnsList[2].elevatorsList[3].direction = "down";
+            //     battery.columnsList[2].elevatorsList[3].floorRequestList.Add(24);
 
-                // C5
-                battery.columnsList[2].elevatorsList[4].currentFloor = 39;
-                battery.columnsList[2].elevatorsList[4].direction = "down";
-                battery.columnsList[2].elevatorsList[4].floorRequestList.Add(1);
+            //     // C5
+            //     battery.columnsList[2].elevatorsList[4].currentFloor = 39;
+            //     battery.columnsList[2].elevatorsList[4].direction = "down";
+            //     battery.columnsList[2].elevatorsList[4].floorRequestList.Add(1);
                 
-                // User at lobby want's to go to floor 36, Elevator 1 should be sent
-                Console.WriteLine("User is at the lobby and wants to go to floor 36");
-                Console.WriteLine("He enters 36 on the pannel");
-                battery.assignElevator(36, "up");
-            }
+            //     // User at lobby want's to go to floor 36, Elevator 1 should be sent
+            //     Console.WriteLine("User is at the lobby and wants to go to floor 36");
+            //     Console.WriteLine("He enters 36 on the pannel");
+            //     battery.assignElevator(36, "up");
+            // }
 
-            void Scenario3(){
-            //--------------------------------------------// Scenario 3 //-----------------------------------------------------
-            // D1
-                battery.columnsList[3].elevatorsList[0].currentFloor = 58;
-                battery.columnsList[3].elevatorsList[0].direction = "down";
-                battery.columnsList[3].elevatorsList[0].floorRequestList.Add(1);
+            // void Scenario3(){
+            // //--------------------------------------------// Scenario 3 //-----------------------------------------------------
+            // // D1
+            //     battery.columnsList[3].elevatorsList[0].currentFloor = 58;
+            //     battery.columnsList[3].elevatorsList[0].direction = "down";
+            //     battery.columnsList[3].elevatorsList[0].floorRequestList.Add(1);
 
-                // D2
-                battery.columnsList[3].elevatorsList[1].currentFloor = 50;
-                battery.columnsList[3].elevatorsList[1].direction = "up";
-                battery.columnsList[3].elevatorsList[1].floorRequestList.Add(60);
+            //     // D2
+            //     battery.columnsList[3].elevatorsList[1].currentFloor = 50;
+            //     battery.columnsList[3].elevatorsList[1].direction = "up";
+            //     battery.columnsList[3].elevatorsList[1].floorRequestList.Add(60);
 
-                // D3
-                battery.columnsList[3].elevatorsList[2].currentFloor = 46;
-                battery.columnsList[3].elevatorsList[2].direction = "up";
-                battery.columnsList[3].elevatorsList[2].floorRequestList.Add(58);
+            //     // D3
+            //     battery.columnsList[3].elevatorsList[2].currentFloor = 46;
+            //     battery.columnsList[3].elevatorsList[2].direction = "up";
+            //     battery.columnsList[3].elevatorsList[2].floorRequestList.Add(58);
 
-                // D4
-                battery.columnsList[3].elevatorsList[3].currentFloor = 1;
-                battery.columnsList[3].elevatorsList[3].direction = "up";
-                battery.columnsList[3].elevatorsList[3].floorRequestList.Add(54);
+            //     // D4
+            //     battery.columnsList[3].elevatorsList[3].currentFloor = 1;
+            //     battery.columnsList[3].elevatorsList[3].direction = "up";
+            //     battery.columnsList[3].elevatorsList[3].floorRequestList.Add(54);
 
-                // D5
-                battery.columnsList[3].elevatorsList[4].currentFloor = 60;
-                battery.columnsList[3].elevatorsList[4].direction = "down";
-                battery.columnsList[3].elevatorsList[4].floorRequestList.Add(1);
+            //     // D5
+            //     battery.columnsList[3].elevatorsList[4].currentFloor = 60;
+            //     battery.columnsList[3].elevatorsList[4].direction = "down";
+            //     battery.columnsList[3].elevatorsList[4].floorRequestList.Add(1);
                 
-                // User at floor 54 want's to go to floor 1, Elevator 1 should be sent
-                Console.WriteLine("User is at floor 54 and wants to go to the lobby");
-                Console.WriteLine("He presses on the pannel");
-                battery.columnsList[3].requestElevator(54, "down");
-            }
+            //     // User at floor 54 want's to go to floor 1, Elevator 1 should be sent
+            //     Console.WriteLine("User is at floor 54 and wants to go to the lobby");
+            //     Console.WriteLine("He presses on the pannel");
+            //     battery.columnsList[3].requestElevator(54, "down");
+            // }
 
-            void Scenario4(){
-                //--------------------------------------------// Scenario 4 //-----------------------------------------------------
-                // A1
-                battery.columnsList[0].elevatorsList[0].currentFloor = -4;
+            // void Scenario4(){
+            //     //--------------------------------------------// Scenario 4 //-----------------------------------------------------
+            //     // A1
+            //     battery.columnsList[0].elevatorsList[0].currentFloor = -4;
 
-                // A2
-                battery.columnsList[0].elevatorsList[1].currentFloor = 1;
+            //     // A2
+            //     battery.columnsList[0].elevatorsList[1].currentFloor = 1;
 
-                //A3
-                battery.columnsList[0].elevatorsList[2].currentFloor = -3;
-                battery.columnsList[0].elevatorsList[2].direction = "down";
-                battery.columnsList[0].elevatorsList[2].floorRequestList.Add(-5);
+            //     //A3
+            //     battery.columnsList[0].elevatorsList[2].currentFloor = -3;
+            //     battery.columnsList[0].elevatorsList[2].direction = "down";
+            //     battery.columnsList[0].elevatorsList[2].floorRequestList.Add(-5);
 
-                // A4
-                battery.columnsList[0].elevatorsList[3].currentFloor = -6;
-                battery.columnsList[0].elevatorsList[3].direction = "up";
-                battery.columnsList[0].elevatorsList[3].floorRequestList.Add(1);
+            //     // A4
+            //     battery.columnsList[0].elevatorsList[3].currentFloor = -6;
+            //     battery.columnsList[0].elevatorsList[3].direction = "up";
+            //     battery.columnsList[0].elevatorsList[3].floorRequestList.Add(1);
 
-                // A5
-                battery.columnsList[0].elevatorsList[4].currentFloor = -1;
-                battery.columnsList[0].elevatorsList[4].direction = "down";
-                battery.columnsList[0].elevatorsList[4].floorRequestList.Add(-6);
+            //     // A5
+            //     battery.columnsList[0].elevatorsList[4].currentFloor = -1;
+            //     battery.columnsList[0].elevatorsList[4].direction = "down";
+            //     battery.columnsList[0].elevatorsList[4].floorRequestList.Add(-6);
 
-                // User at Basement 3 want's to go to floor 1, Elevator 4 should be sent
-                Console.WriteLine("User is at SS3 and wants to go to the lobby");
-                Console.WriteLine("He presses on the pannel");
-                battery.columnsList[0].requestElevator(-3, "up");
-            }
+            //     // User at Basement 3 want's to go to floor 1, Elevator 4 should be sent
+            //     Console.WriteLine("User is at SS3 and wants to go to the lobby");
+            //     Console.WriteLine("He presses on the pannel");
+            //     battery.columnsList[0].requestElevator(-3, "up");
+            // }
 
             // Scenario1();
 
