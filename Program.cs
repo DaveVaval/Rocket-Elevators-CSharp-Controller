@@ -17,9 +17,8 @@ namespace C_
         public List<Column> columnsList;
         public List<FloorRequestButton> floorRequestButtonsList;
         
-        public Battery(int id, string status,int amountOfColumns, int amountOfFloors, int amountOfBasements, int amountOfElevatorPerColumn)
+        public Battery(int id, string status,int amountOfColumns, int amountOfFloors, int amountOfBasements, int amountOfElevatorPerColumn) // this is the battery constructor
         {
-            // Battery testBat = new Battery(1, "online", 4, 60, 6, 5);
             this.ID = id;
             this.amountOfColumns = amountOfColumns;
             this.status = status;
@@ -86,7 +85,7 @@ namespace C_
             }
         }
 
-        public Column findBestColumn(int requestedFloor){ // what?
+        public Column findBestColumn(int requestedFloor){
             Column col = null;
             foreach (Column column in columnsList){
                 if(column.servedFloors.Contains(requestedFloor)){
@@ -96,9 +95,10 @@ namespace C_
             return col;
         }
 
-        public void assignElevator(int requestedFloor, string direction){
+        // This function will return the best elevator from the best column to the user
+        public void assignElevator(int requestedFloor, string direction){ 
             Column column = findBestColumn(requestedFloor); // return?
-            Elevator elevator = column.findElevator(1, direction); // return?
+            Elevator elevator = column.findBestElevator(1, direction); // return?
             elevator.floorRequestList.Add(requestedFloor);
             elevator.sortFloorList();
             elevator.move();
@@ -107,7 +107,7 @@ namespace C_
             Console.WriteLine("Elevator {0} from column {1} is sent to lobby", elevator.ID, column.ID);
             Console.WriteLine("He enters the elevator");
             Console.WriteLine(".........");
-            Console.WriteLine("Elevator reached floor: " + elevator.currentfloor);
+            Console.WriteLine("Elevator reached floor: " + elevator.currentFloor);
             Console.WriteLine("He gets out...");
         }
     }
@@ -124,7 +124,7 @@ namespace C_
         public List<Elevator> elevatorsList;
         public List<CallButton> callButtonsList;
 
-        public Column(int id, string status, int amountOfFloors, int amountOfElevators, List<int> servedFloors, bool isBasement){
+        public Column(int id, string status, int amountOfFloors, int amountOfElevators, List<int> servedFloors, bool isBasement){ // This is the column constructor
             
             this.ID = id;
             this.status = status;
@@ -137,13 +137,6 @@ namespace C_
             createElevators(amountOfFloors, amountOfElevators);
             createCallButtons(amountOfFloors, isBasement);
 
-            // debug
-            // foreach(Elevator elevator in elevatorsList)
-            // {
-            //     System.Console.WriteLine("elevator: " + elevator.ID);
-            //     // foreach(int floor in column.servedFloors)
-            //     //     System.Console.WriteLine("    floor: " + floor);
-            // } 
         }
 
 
@@ -175,8 +168,9 @@ namespace C_
             }
         }
 
+        // This is the function that will be called when a user wants to go back to the lobby from any given floor
         public void requestElevator(int userPosition, string direction){
-            Elevator elevator = findElevator(userPosition, direction); // return?
+            Elevator elevator = findBestElevator(userPosition, direction); // return?
             elevator.floorRequestList.Add(1);
             elevator.sortFloorList();
             elevator.move();
@@ -185,11 +179,12 @@ namespace C_
             Console.WriteLine("Elevator {0} from column {1} is sent to floor: {2}", elevator.ID, this.ID, userPosition);
             Console.WriteLine("He enters the elevator");
             Console.WriteLine(".........");
-            Console.WriteLine("Elevator reached floor: " + elevator.currentfloor);
+            Console.WriteLine("Elevator reached floor: " + elevator.currentFloor);
             Console.WriteLine("He gets out...");
         }
 
-        public Elevator findElevator(int requestedFloor, string requestedDirection){ // return?
+        // This function in conjuction wwith checkElevator will return the best elevator
+        public Elevator findBestElevator(int requestedFloor, string requestedDirection){ 
             Hashtable bestElevatorInfo = new Hashtable(){
                 {"bestElevator", null},
                 {"bestScore", 6},
@@ -197,16 +192,16 @@ namespace C_
             };
             if(requestedFloor == 1){
                 foreach(Elevator elevator in elevatorsList){
-                    if(1 == elevator.currentfloor && elevator.status == "stopped"){
+                    if(1 == elevator.currentFloor && elevator.status == "stopped"){
                         bestElevatorInfo = checkElevator(1, elevator, requestedFloor, bestElevatorInfo);
                     }
-                    else if(1 == elevator.currentfloor && elevator.status == "idle"){
+                    else if(1 == elevator.currentFloor && elevator.status == "idle"){
                         bestElevatorInfo = checkElevator(2, elevator, requestedFloor, bestElevatorInfo);
                     }
-                    else if(1 > elevator.currentfloor && elevator.direction == "up"){
+                    else if(1 > elevator.currentFloor && elevator.direction == "up"){
                         bestElevatorInfo = checkElevator(3, elevator, requestedFloor, bestElevatorInfo);
                     }
-                    else if(1 < elevator.currentfloor && elevator.direction == "down"){
+                    else if(1 < elevator.currentFloor && elevator.direction == "down"){
                         bestElevatorInfo = checkElevator(3, elevator, requestedFloor, bestElevatorInfo);
                     }
                     else if(elevator.status == "idle"){
@@ -219,13 +214,13 @@ namespace C_
             }
             else{
                 foreach(Elevator elevator in elevatorsList){
-                    if(requestedFloor == elevator.currentfloor && elevator.status == "idle" && requestedDirection == elevator.direction){
+                    if(requestedFloor == elevator.currentFloor && elevator.status == "idle" && requestedDirection == elevator.direction){
                         bestElevatorInfo = checkElevator(1, elevator, requestedFloor, bestElevatorInfo);
                     }
-                    else if(requestedFloor > elevator.currentfloor  && elevator.direction == "up" && requestedDirection == elevator.direction){
+                    else if(requestedFloor > elevator.currentFloor  && elevator.direction == "up" && requestedDirection == elevator.direction){
                         bestElevatorInfo = checkElevator(2, elevator, requestedFloor, bestElevatorInfo);
                     }
-                    else if(requestedFloor < elevator.currentfloor  && elevator.direction == "down" && requestedDirection == elevator.direction){
+                    else if(requestedFloor < elevator.currentFloor  && elevator.direction == "down" && requestedDirection == elevator.direction){
                         bestElevatorInfo = checkElevator(2, elevator, requestedFloor, bestElevatorInfo);
                     }
                     else if(elevator.status == "stopped"){
@@ -236,22 +231,22 @@ namespace C_
                     }
                 }
             }
-            return (Elevator)bestElevatorInfo["bestElevator"]; // need to make sure this works
+            return (Elevator)bestElevatorInfo["bestElevator"];
         }
 
         public Hashtable checkElevator(int baseScore, Elevator elevator, int floor, Hashtable bestElevatorInfo){
             if(baseScore < (int)bestElevatorInfo["bestScore"]){
                 bestElevatorInfo["bestScore"] = baseScore;
                 bestElevatorInfo["bestElevator"] = elevator;
-                bestElevatorInfo["referenceGap"] = (int)Math.Abs((double)elevator.currentfloor - floor);
+                bestElevatorInfo["referenceGap"] = (int)Math.Abs((double)elevator.currentFloor - floor);
             }
-            // else if((int)bestElevatorInfo["bestScore"] == baseScore){
-            //     int gap = (int)Math.Abs((double)elevator.currentfloor - floor);
-            //     if((int)bestElevatorInfo["referenceGap"] > gap){
-            //         bestElevatorInfo["bestElevator"] = elevator;
-            //         bestElevatorInfo["referenceGap"] = gap;
-            //     }
-            // }
+            else if((int)bestElevatorInfo["bestScore"] == baseScore){
+                int gap = (int)Math.Abs((double)elevator.currentFloor - floor);
+                if((int)bestElevatorInfo["referenceGap"] > gap){
+                    bestElevatorInfo["bestElevator"] = elevator;
+                    bestElevatorInfo["referenceGap"] = gap;
+                }
+            }
             return bestElevatorInfo;
         }
     }
@@ -264,34 +259,35 @@ namespace C_
         public string status;
         public int amountOfFloors;
         public string direction;
-        public int currentfloor;
+        public int currentFloor;
         public Door door;
-        public List<int> floorRequestList; // will have to come back to this
+        public List<int> floorRequestList; 
 
-        public Elevator(int id, string status, int amountOfFloors, int currentfloor){
+        public Elevator(int id, string status, int amountOfFloors, int currentFloor){ // Elevator Constructor
             this.ID = id;
             this.status = status;
             this.amountOfFloors = amountOfFloors;
             this.direction = null;
-            this.currentfloor = currentfloor;
+            this.currentFloor = currentFloor;
             this.door = new Door(id, "closed");
-            this.floorRequestList = new List<int>(); // will have to come back to this
+            this.floorRequestList = new List<int>();
         }
 
+        // This function will make the elevator to any given floor
         public void move(){
             while(floorRequestList.Count != 0){
                 int destination = floorRequestList[0];
                 status = "moving";
-                if(currentfloor < destination){
+                if(currentFloor < destination){
                     direction = "up";
-                    while(currentfloor < destination){
-                        currentfloor++;
+                    while(currentFloor < destination){
+                        currentFloor++;
                     }
                 }
-                else if(currentfloor > destination){
+                else if(currentFloor > destination){
                     direction = "down";
-                    while(currentfloor > destination){
-                        currentfloor--;
+                    while(currentFloor > destination){
+                        currentFloor--;
                     }
                 }
                 status = "idle";
@@ -369,27 +365,27 @@ namespace C_
             void Scenario1(){
                 //---------------------------------------------------------// Scenario 1 //------------------------------------------------------------
                 // B1
-                battery.columnsList[1].elevatorsList[0].currentfloor = 20;
+                battery.columnsList[1].elevatorsList[0].currentFloor = 20;
                 battery.columnsList[1].elevatorsList[0].direction = "down";
                 battery.columnsList[1].elevatorsList[0].floorRequestList.Add(5);
 
                 // B2
-                battery.columnsList[1].elevatorsList[1].currentfloor = 3;
+                battery.columnsList[1].elevatorsList[1].currentFloor = 3;
                 battery.columnsList[1].elevatorsList[1].direction = "up";
                 battery.columnsList[1].elevatorsList[1].floorRequestList.Add(15);
 
                 // B3
-                battery.columnsList[1].elevatorsList[2].currentfloor = 13;
+                battery.columnsList[1].elevatorsList[2].currentFloor = 13;
                 battery.columnsList[1].elevatorsList[2].direction = "down";
                 battery.columnsList[1].elevatorsList[2].floorRequestList.Add(1);
 
                 // B4
-                battery.columnsList[1].elevatorsList[3].currentfloor = 15;
+                battery.columnsList[1].elevatorsList[3].currentFloor = 15;
                 battery.columnsList[1].elevatorsList[3].direction = "down";
                 battery.columnsList[1].elevatorsList[3].floorRequestList.Add(2);
 
                 // B5
-                battery.columnsList[1].elevatorsList[4].currentfloor = 6;
+                battery.columnsList[1].elevatorsList[4].currentFloor = 6;
                 battery.columnsList[1].elevatorsList[4].direction = "down";
                 battery.columnsList[1].elevatorsList[4].floorRequestList.Add(1);
                 battery.columnsList[1].elevatorsList[4].move();
@@ -403,27 +399,27 @@ namespace C_
             void Scenario2(){
             //--------------------------------------------// Scenario 2 //-----------------------------------------------------
             // C1
-                battery.columnsList[2].elevatorsList[0].currentfloor = 1;
+                battery.columnsList[2].elevatorsList[0].currentFloor = 1;
                 battery.columnsList[2].elevatorsList[0].direction = "up";
                 battery.columnsList[2].elevatorsList[0].floorRequestList.Add(21);
 
                 // C2
-                battery.columnsList[2].elevatorsList[1].currentfloor = 23;
+                battery.columnsList[2].elevatorsList[1].currentFloor = 23;
                 battery.columnsList[2].elevatorsList[1].direction = "up";
                 battery.columnsList[2].elevatorsList[1].floorRequestList.Add(28);
 
                 // C3
-                battery.columnsList[2].elevatorsList[2].currentfloor = 33;
+                battery.columnsList[2].elevatorsList[2].currentFloor = 33;
                 battery.columnsList[2].elevatorsList[2].direction = "down";
                 battery.columnsList[2].elevatorsList[2].floorRequestList.Add(1);
 
                 // C4
-                battery.columnsList[2].elevatorsList[3].currentfloor = 40;
+                battery.columnsList[2].elevatorsList[3].currentFloor = 40;
                 battery.columnsList[2].elevatorsList[3].direction = "down";
                 battery.columnsList[2].elevatorsList[3].floorRequestList.Add(24);
 
                 // C5
-                battery.columnsList[2].elevatorsList[4].currentfloor = 39;
+                battery.columnsList[2].elevatorsList[4].currentFloor = 39;
                 battery.columnsList[2].elevatorsList[4].direction = "down";
                 battery.columnsList[2].elevatorsList[4].floorRequestList.Add(1);
                 
@@ -436,27 +432,27 @@ namespace C_
             void Scenario3(){
             //--------------------------------------------// Scenario 3 //-----------------------------------------------------
             // D1
-                battery.columnsList[3].elevatorsList[0].currentfloor = 58;
+                battery.columnsList[3].elevatorsList[0].currentFloor = 58;
                 battery.columnsList[3].elevatorsList[0].direction = "down";
                 battery.columnsList[3].elevatorsList[0].floorRequestList.Add(1);
 
                 // D2
-                battery.columnsList[3].elevatorsList[1].currentfloor = 50;
+                battery.columnsList[3].elevatorsList[1].currentFloor = 50;
                 battery.columnsList[3].elevatorsList[1].direction = "up";
                 battery.columnsList[3].elevatorsList[1].floorRequestList.Add(60);
 
                 // D3
-                battery.columnsList[3].elevatorsList[2].currentfloor = 46;
+                battery.columnsList[3].elevatorsList[2].currentFloor = 46;
                 battery.columnsList[3].elevatorsList[2].direction = "up";
                 battery.columnsList[3].elevatorsList[2].floorRequestList.Add(58);
 
                 // D4
-                battery.columnsList[3].elevatorsList[3].currentfloor = 1;
+                battery.columnsList[3].elevatorsList[3].currentFloor = 1;
                 battery.columnsList[3].elevatorsList[3].direction = "up";
                 battery.columnsList[3].elevatorsList[3].floorRequestList.Add(54);
 
                 // D5
-                battery.columnsList[3].elevatorsList[4].currentfloor = 60;
+                battery.columnsList[3].elevatorsList[4].currentFloor = 60;
                 battery.columnsList[3].elevatorsList[4].direction = "down";
                 battery.columnsList[3].elevatorsList[4].floorRequestList.Add(1);
                 
@@ -469,23 +465,23 @@ namespace C_
             void Scenario4(){
                 //--------------------------------------------// Scenario 4 //-----------------------------------------------------
                 // A1
-                battery.columnsList[0].elevatorsList[0].currentfloor = -4;
+                battery.columnsList[0].elevatorsList[0].currentFloor = -4;
 
                 // A2
-                battery.columnsList[0].elevatorsList[1].currentfloor = 1;
+                battery.columnsList[0].elevatorsList[1].currentFloor = 1;
 
                 //A3
-                battery.columnsList[0].elevatorsList[2].currentfloor = -3;
+                battery.columnsList[0].elevatorsList[2].currentFloor = -3;
                 battery.columnsList[0].elevatorsList[2].direction = "down";
                 battery.columnsList[0].elevatorsList[2].floorRequestList.Add(-5);
 
                 // A4
-                battery.columnsList[0].elevatorsList[3].currentfloor = -6;
+                battery.columnsList[0].elevatorsList[3].currentFloor = -6;
                 battery.columnsList[0].elevatorsList[3].direction = "up";
                 battery.columnsList[0].elevatorsList[3].floorRequestList.Add(1);
 
                 // A5
-                battery.columnsList[0].elevatorsList[4].currentfloor = -1;
+                battery.columnsList[0].elevatorsList[4].currentFloor = -1;
                 battery.columnsList[0].elevatorsList[4].direction = "down";
                 battery.columnsList[0].elevatorsList[4].floorRequestList.Add(-6);
 
