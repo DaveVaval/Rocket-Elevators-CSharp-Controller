@@ -97,8 +97,8 @@ namespace C_
 
         // This function will return the best elevator from the best column to the user
         public void assignElevator(int requestedFloor, string direction){ 
-            Column column = findBestColumn(requestedFloor); // return?
-            Elevator elevator = column.findBestElevator(1, direction); // return?
+            Column column = findBestColumn(requestedFloor);
+            Elevator elevator = column.findBestElevator(1, direction);
             elevator.floorRequestList.Add(requestedFloor);
             elevator.sortFloorList();
             elevator.move();
