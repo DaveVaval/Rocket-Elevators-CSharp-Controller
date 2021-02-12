@@ -170,7 +170,7 @@ namespace C_
 
         // This is the function that will be called when a user wants to go back to the lobby from any given floor
         public void requestElevator(int userPosition, string direction){
-            Elevator elevator = findBestElevator(userPosition, direction); // return?
+            Elevator elevator = findBestElevator(userPosition, direction);
             elevator.floorRequestList.Add(1);
             elevator.sortFloorList();
             elevator.move();
