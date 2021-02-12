@@ -273,7 +273,7 @@ namespace C_
             this.floorRequestList = new List<int>();
         }
 
-        // This function will make the elevator to any given floor
+        // This function will make the elevator move to any given floor
         public void move(){
             while(floorRequestList.Count != 0){
                 int destination = floorRequestList[0];
@@ -362,7 +362,7 @@ namespace C_
             // Console.WriteLine("-----------------------------// Rocket Elevators //--------------------------------");
             Battery battery = new Battery(1, "online", 4, 60, 6, 5);
             
-            
+
             // void Scenario1(){
             //     //---------------------------------------------------------// Scenario 1 //------------------------------------------------------------
             //     // B1
